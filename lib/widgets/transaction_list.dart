@@ -10,10 +10,9 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 450,
-      child: transaction.isEmpty
-          ? Column(
+    return transaction.isEmpty
+        ? LayoutBuilder(builder: (ctx, constraints) {
+            return Column(
               children: [
                 SizedBox(
                   height: 50,
@@ -23,48 +22,59 @@ class TransactionList extends StatelessWidget {
                   height: 30,
                 ),
                 Container(
-                  height: 200,
+                  height: constraints.maxHeight * 0.6,
                   child: Image.asset(
                     'assets/images/zzz.png',
                     fit: BoxFit.cover,
                   ),
                 )
               ],
-            )
-          : ListView.builder(
-              itemBuilder: (context, index) {
-                return Card(
-                  elevation: 5,
-                  margin: EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 5,
-                  ),
-                  child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 30,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: FittedBox(
-                              child: Text('\$${transaction[index].amount}')),
-                        ),
+            );
+          })
+        : ListView.builder(
+            itemBuilder: (context, index) {
+              return Card(
+                elevation: 5,
+                margin: EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 5,
+                ),
+                child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FittedBox(
+                            child: Text('\$${transaction[index].amount}')),
                       ),
-                      title: Text(
-                        transaction[index].title!,
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
+                    ),
+                    title: Text(
+                      transaction[index].title!,
+                      style: TextStyle(
+                        color: Colors.black,
                       ),
-                      subtitle: Text(
-                          DateFormat.yMMMd().format(transaction[index].date!)),
-                      trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        color: Colors.red,
-                        onPressed: () => deleteTx(transaction[index].id),
-                      )),
-                );
-              },
-              itemCount: transaction.length,
-            ),
-    );
+                    ),
+                    subtitle: Text(
+                        DateFormat.yMMMd().format(transaction[index].date!)),
+                    trailing: MediaQuery.of(context).size.width > 360
+                        ? TextButton.icon(
+                            label: Text('Delete'),
+                            icon: Icon(Icons.delete),
+                            onPressed: () => deleteTx(
+                              transaction[index].id,
+                            ),
+                            style: TextButton.styleFrom(
+                              primary: Colors.red,
+                            ),
+                          )
+                        : IconButton(
+                            icon: Icon(Icons.delete),
+                            color: Colors.red,
+                            onPressed: () => deleteTx(transaction[index].id),
+                          )),
+              );
+            },
+            itemCount: transaction.length,
+          );
   }
 }

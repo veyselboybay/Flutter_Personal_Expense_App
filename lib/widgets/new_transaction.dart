@@ -53,59 +53,66 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 10,
-      ),
-      elevation: 5,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 5),
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              controller: inputController,
-              decoration: InputDecoration(
-                labelText: 'Title',
+    return SingleChildScrollView(
+      child: Card(
+        margin: EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 10,
+        ),
+        elevation: 5,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 5),
+          padding: EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                controller: inputController,
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                ),
+                onSubmitted: (_) => submitData(),
               ),
-              onSubmitted: (_) => submitData(),
-            ),
-            TextField(
-              controller: amountController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: 'Amount',
+              TextField(
+                controller: amountController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Amount',
+                ),
+                onSubmitted: (_) => submitData(),
               ),
-              onSubmitted: (_) => submitData(),
-            ),
-            Container(
-              height: 70,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      _selectedDate == null
-                          ? 'No Date Chosen!'
-                          : DateFormat.yMd().format(_selectedDate!),
+              Container(
+                height: 70,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _selectedDate == null
+                            ? 'No Date Chosen!'
+                            : DateFormat.yMd().format(_selectedDate!),
+                      ),
                     ),
-                  ),
-                  TextButton(
-                    child: Text('Choose a Date'),
-                    onPressed: _presentDatePicker,
-                  )
-                ],
+                    TextButton(
+                      child: Text('Choose a Date'),
+                      onPressed: _presentDatePicker,
+                    )
+                  ],
+                ),
               ),
-            ),
-            ElevatedButton(
-              child: Text('Add Transaction'),
-              onPressed: submitData,
-              style: TextButton.styleFrom(
-                primary: Colors.white,
-              ),
-            )
-          ],
+              ElevatedButton(
+                child: Text('Add Transaction'),
+                onPressed: submitData,
+                style: TextButton.styleFrom(
+                  primary: Colors.white,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
